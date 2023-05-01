@@ -1,9 +1,9 @@
 import { Outlet, Navigate } from "react-router-dom";
 import Logo from '/mark.svg'
-import {userStateContext} from '../contexts/ContextProvider'
+import {useStateContext} from '../contexts/ContextProvider'
 
 export default function GuestLayout() {
-    const {userToken} = userStateContext();
+    const {userToken} = useStateContext();
     if (userToken) {
         return (
             <Navigate to="/" />

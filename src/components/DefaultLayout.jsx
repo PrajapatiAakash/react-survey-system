@@ -4,7 +4,7 @@ import { Bars3Icon, BellIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/ou
 
 import Logo from '/mark.svg'
 import { Navigate, NavLink, Outlet } from 'react-router-dom'
-import {userStateContext} from '../contexts/ContextProvider'
+import {useStateContext} from '../contexts/ContextProvider'
 
 const navigation = [
   { name: 'Dashboard', to: '/'},
@@ -16,7 +16,7 @@ function classNames(...classes) {
 }
 
 export default function DefaultLayout() {
-    const {currentUser, userToken} = userStateContext();
+    const {currentUser, userToken} = useStateContext();
     const logout = (e) => {
         e.preventDefault();
     }
