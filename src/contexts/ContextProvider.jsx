@@ -34,7 +34,7 @@ export const ContextProvider = ({children}) => {
         name: "Aakash",
         email: "prajapatiakash1021993@gmail.com"
     });
-    const [userToken, setUserToken] = useState("d");
+    const [userToken, setUserToken] = useState();
     const [surveys, setSurveys] = useState(tmpSurveys);
 
     return (
