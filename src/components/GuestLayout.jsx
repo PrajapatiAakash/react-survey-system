@@ -4,6 +4,7 @@ import {useStateContext} from '../contexts/ContextProvider'
 
 export default function GuestLayout() {
     const {userToken} = useStateContext();
+    console.log(userToken)
     if (userToken) {
         return (
             <Navigate to="/" />

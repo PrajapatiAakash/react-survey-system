@@ -2,24 +2,34 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 
 import axiosClient from '../axios.js'
+import { useStateContext } from '../contexts/ContextProvider.jsx';
 
 export default function Signup() {
-    const [fullName, setFullName] = useState();
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-    const [passwordConfirmation, setPasswordConfirmation] = useState();
+    const {setUserToken, setCurrentUser} = useStateContext();
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordConfirmation, setPasswordConfirmation] = useState("");
+    const [error, setError] = useState({__html: ""})
 
     const onSubmit = (ev) => {
         ev.preventDefault()
-        console.log("hi")
+        setError({ __html: "" });
         axiosClient.post("/singup", {
-
+            name: fullName,
+            email,
+            password,
+            password_confirmation: passwordConfirmation
         })
         .then(({data}) => {
-            console.log(data)
+            setUserToken(data.token);
+            setCurrentUser(data.user);
         })
         .catch((error) => {
-            console.log(error)
+            if (error.response) {
+                const finalErrors = Object.values(error.response.data.errors).reduce((accum, next) => [...accum, ...next], [])
+                setError({__html: finalErrors.join('<br>')});
+            }
         })
     }
 
@@ -29,6 +39,8 @@ export default function Signup() {
                 Sign up for free
             </h2>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                {error.__html && (<div className="bg-red-500 rounded py-2 px-3 text-white mb-6" dangerouslySetInnerHTML={error}>
+                </div>)}
                 <form onSubmit={onSubmit} className="space-y-5" action="#" method="POST">
                     <div>
                         <label htmlFor="full-name" className="text-left block text-sm font-medium leading-6 text-gray-900">
@@ -43,12 +55,13 @@ export default function Signup() {
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             placeholder="Please enter full name"
                             value={fullName}
+                            onChange={(ev) => setFullName(ev.target.value)}
                             />
                         </div>
                     </div>
                     <div>
                         <label htmlFor="email" className="text-left block text-sm font-medium leading-6 text-gray-900">
-                            Email address
+                            Email Address
                         </label>
                         <div className="mt-1">
                             <input
@@ -60,6 +73,7 @@ export default function Signup() {
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             placeholder="Please enter email address"
                             value={email}
+                            onChange={(ev) => setEmail(ev.target.value)}
                             />
                         </div>
                     </div>
@@ -77,6 +91,7 @@ export default function Signup() {
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             placeholder="Please enter password"
                             value={password}
+                            onChange={(ev) => setPassword(ev.target.value)}
                             />
                         </div>
                     </div>
@@ -92,8 +107,9 @@ export default function Signup() {
                             type="password"
                             required
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="Please enter password cofirmation"
+                            placeholder="Please enter password confirmation"
                             value={passwordConfirmation}
+                            onChange={(ev) => setPasswordConfirmation(ev.target.value)}
                             />
                         </div>
                     </div>

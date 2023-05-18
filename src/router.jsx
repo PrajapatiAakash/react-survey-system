@@ -6,6 +6,7 @@ import Login from "./view/Login";
 import Signup from "./view/Signup";
 import Surveys from "./view/Surveys";
 import SurveyView from "./view/SurveyView";
+import ForgotPassword from "./view/ForgotPassword";
 
 const router = createBrowserRouter([
     {
@@ -35,12 +36,16 @@ const router = createBrowserRouter([
         element: <GuestLayout />,
         children: [
             {
-                path: "/singup",
+                path: "/signup",
                 element: <Signup />,
             },
             {
                 path: "/login",
                 element: <Login />,
+            },
+            {
+                path: "/forgot-password",
+                element: <ForgotPassword />,
             }
         ]
     }
