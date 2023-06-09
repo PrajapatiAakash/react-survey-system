@@ -5,6 +5,7 @@ import TButton from "../components/core/TButton";
 import PageComponent from "../components/PageComponent";
 import axiosClient from '../axios.js'
 import { useNavigate } from "react-router-dom";
+import SurveyQuestions from "../components/SurveyQuestions";
 
 export default function SurveyView() {
     const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function SurveyView() {
             }
             console.log(err, err.response)
         });
-    };
+    }
     const onImageChoose = (ev) => {
         console.log("on choose")
         const file = ev.target.files[0];
@@ -52,6 +53,12 @@ export default function SurveyView() {
             ev.target.value = "";
         }
         reader.readAsDataURL(file);
+    }
+    const onSurveyUpdate = (questions) => {
+        setSurvey({
+            ...survey,
+            questions: questions
+        });
     }
 
     return (
@@ -189,6 +196,7 @@ export default function SurveyView() {
                             </div>
                         </div>
                         {/*Active*/}
+                        <SurveyQuestions questions={survey.questions} onSurveyUpdate={onSurveyUpdate} />
                     </div>
                     <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                         <TButton>Save</TButton>
