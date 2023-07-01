@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 
 import axiosClient from '../axios.js'
 import PaginationLinks from "../components/PaginationLinks";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Surveys() {
+    const {showToast} = useStateContext();
     const [surveys, setSurveys] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [meta, setMeta] = useState({});
@@ -16,6 +18,7 @@ export default function Surveys() {
             axiosClient.delete(`/survey/${id}`)
             .then(() => {
                 getSurvey();
+                showToast('Survey has been deleted.');
             })
         }
     }
@@ -54,6 +57,11 @@ export default function Surveys() {
             }
             {!isLoading &&
                 <div>
+                    {surveys.length === 0 && (
+                        <div className="py-8 text-center text-gray-700">
+                            You don't have surveys created
+                        </div>
+                    )}
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
                         {surveys.map((survey) => (
                             <SurveyListItem
@@ -63,7 +71,9 @@ export default function Surveys() {
                             />
                         ))}
                     </div>
-                    <PaginationLinks meta={meta} onPageClick={onPageClick} />
+                    {surveys.length > 0 &&
+                        <PaginationLinks meta={meta} onPageClick={onPageClick} />
+                    }
                 </div>
             }
         </PageComponent>

@@ -6,17 +6,18 @@ const StateContext = createContext({
     currentUser: {},
     userToken: null,
     surveys: [],
-    setCurrentUser: () => {
-
+    toast: {
+        message: null,
+        show: false
     },
-    setUserToken: () => {
-
-    }
+    setCurrentUser: () => {},
+    setUserToken: () => {}
 });
 
 export const ContextProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState({});
     const [userToken, _setUserToken] = useState(localStorage.getItem('TOKEN'));
+    const [toast, setToast] = useState({message: '', show: false});
     const setUserToken = (token) => {
         if (token) {
             localStorage.setItem('TOKEN', token)
@@ -25,6 +26,13 @@ export const ContextProvider = ({children}) => {
         }
         _setUserToken(token);
     }
+
+    const showToast = (message) => {
+        setToast({message: message, show: true});
+        setTimeout(() => {
+            setToast({message: '', show: false});
+        }, 5000)
+    }
     
 
     return (
@@ -32,7 +40,9 @@ export const ContextProvider = ({children}) => {
             currentUser,
             setCurrentUser,
             userToken,
-            setUserToken
+            setUserToken,
+            toast,
+            showToast
         }}>
             {children}
         </StateContext.Provider>
