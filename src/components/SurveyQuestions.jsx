@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import uuid4 from "uuid4";
 import QuestionEditor from "./QuestionEditor";
 
-export default function SurveyQuestions({questions, onSurveyUpdate}) {
+export default function SurveyQuestions({questions, onQuestionsUpdate}) {
     const [myQuestions, setMyQuestions] = useState([...questions])
     const addQuestion = (index) => {
         index = index !== undefined ? index : myQuestions.length;
@@ -15,6 +15,7 @@ export default function SurveyQuestions({questions, onSurveyUpdate}) {
             data: {},
         });
         setMyQuestions([...myQuestions]);
+        onQuestionsUpdate(myQuestions)
     };
     const questionChange = (question) => {
         if (!question) return;
@@ -26,14 +27,16 @@ export default function SurveyQuestions({questions, onSurveyUpdate}) {
             return q;
         })
         setMyQuestions([...newQuestions]);
+        onQuestionsUpdate(newQuestions)
     };
     const deleteQuestion = (question) => {
         const newQuestions = myQuestions.filter((q) => q.id != question.id);
         setMyQuestions([...newQuestions]);
+        onQuestionsUpdate(newQuestions)
     };
     useEffect(() => {
-        onSurveyUpdate(myQuestions);
-    }, [myQuestions]);
+        setMyQuestions(questions);
+    }, [questions]);
 
     return (
         <>

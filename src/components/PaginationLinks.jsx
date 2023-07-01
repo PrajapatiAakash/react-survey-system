@@ -43,25 +43,27 @@ export default function PaginationLinks({meta, onPageClick}) {
           </p>
         </div>
         <div>
-          <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-            {meta.links && meta.links.map((link, index) => (
-                <a
-                    key={index}
-                    href="#"
-                    onClick={(ev) => onClick(ev, link)}
-                    aria-current="page"
-                    className={
-                        "relative z-10 inline-flex items-center border px-4 py-2 text-sm font-semibold focus:z-20 hover:bg-gray-50 "
-                        + (link.active ? 'border-indigo-500 bg-indigo-50 text-indigo-600 ' : '')
-                        + (index == 0 ? 'rounded-l-md ' : '')
-                        + (index == (meta.links.length - 1) ? 'rounded-r-md ' : '')
-                        + (!link.url ? 'pointer-events-none opacity-50 ' : '')
-                    }
-                    dangerouslySetInnerHTML={{ __html: link.label }}
-                >
-                </a>
-            ))}
-          </nav>
+          {meta.total > meta.per_page &&
+            <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+              {meta.links && meta.links.map((link, index) => (
+                  <a
+                      key={index}
+                      href="#"
+                      onClick={(ev) => onClick(ev, link)}
+                      aria-current="page"
+                      className={
+                          "relative z-10 inline-flex items-center border px-4 py-2 text-sm font-semibold focus:z-20 hover:bg-gray-50 "
+                          + (link.active ? 'border-indigo-500 bg-indigo-50 text-indigo-600 ' : '')
+                          + (index == 0 ? 'rounded-l-md ' : '')
+                          + (index == (meta.links.length - 1) ? 'rounded-r-md ' : '')
+                          + (!link.url ? 'pointer-events-none opacity-50 ' : '')
+                      }
+                      dangerouslySetInnerHTML={{ __html: link.label }}
+                  >
+                  </a>
+              ))}
+            </nav>
+          }
         </div>
       </div>
     </div>

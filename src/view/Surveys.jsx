@@ -11,8 +11,13 @@ export default function Surveys() {
     const [surveys, setSurveys] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [meta, setMeta] = useState({});
-    const onDeleteClick = () => {
-        console.log("dff")
+    const onDeleteClick = (id) => {
+        if (confirm('Are you sure you want to delete this survey?')) {
+            axiosClient.delete(`/survey/${id}`)
+            .then(() => {
+                getSurvey();
+            })
+        }
     }
 
     const onPageClick = (link) => {
@@ -34,6 +39,7 @@ export default function Surveys() {
     useEffect(() => {
         getSurvey();
     }, []);
+
     return (
         <PageComponent title="Surveys"
             buttons={
